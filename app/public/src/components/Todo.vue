@@ -13,9 +13,9 @@
 				<input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
 				<label for="toggle-all">Mark all as complete</label>
 				<ul class="todo-list">
-					<li class="todo" v-for="todo in filteredTodos" :key="todo.id" :class="{completed: todo.completed, editing: todo == editedTodo}" @click="setStatus(todo)">
+					<li class="todo" v-for="todo in filteredTodos" :key="todo.id" :class="{completed: todo.completed, editing: todo == editedTodo}">
 						<div class="view">
-							<input class="toggle" type="checkbox" v-model="todo.completed">
+							<input class="toggle" type="checkbox" v-model="todo.completed" @click="setStatus(todo)">
 							<label @dblclick="editTodo(todo)">{{todo.title}}</label>
 							<button class="destroy" @click.stop="removeTodo(todo)"></button>
 						</div>
@@ -164,12 +164,26 @@ export default {
 			todo.title = todo.title.trim();
 			if (!todo.title) {
 				this.removeTodo(todo);
+			} else {
+				this.updateTodo(todo);
 			}
 		},
 
 		cancelEdit: function (todo) {
 			this.editedTodo = null;
 			todo.title = this.beforeEditCache;
+		},
+
+		updateTodo(todo) {
+			let params = {
+				id: todo.id,
+				title: todo.title
+			}
+			R.todo.updateTodo(params).then(resp => {
+				if(resp.ok) {
+					this.todos = resp.body;
+				} 
+			})
 		},
 
 		removeCompleted: function () {

@@ -40,6 +40,14 @@ class TodoController extends Controller {
     this.success(resultAll);
   }
 
+  // 更新一条项目的标题
+  async updateTodo () {
+    const { ctx } = this;
+    await ctx.service.todo.updateTodo(ctx.request.body);
+    let resultAll = await ctx.service.todo.queryAll();
+    this.success(resultAll);
+  }
+
   // 删除所有已完成的项目
   async removeCompleted() {
     const { ctx } = this;

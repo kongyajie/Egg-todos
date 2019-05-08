@@ -21,7 +21,14 @@ class TodoService extends Service {
       id: params.id,
       completed: params.completed ? 1 : 0
     }
-    return await this.app.mysql.update('todoList', row)
+    return await this.app.mysql.update('todoList', row);
+  }
+  async updateTodo(params) {
+    const row = {
+      id: params.id,
+      title: params.title
+    }
+    return await this.app.mysql.update('todoList', row);
   }
   async removeCompleted() {
     return await this.app.mysql.delete('todoList', {

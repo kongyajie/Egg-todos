@@ -34,6 +34,9 @@ const Request = {
     setStatus(params) {
       return Ajax.postJson(`/todo/setStatus`, params);
     },
+    updateTodo(params) {
+      return Ajax.postJson(`/todo/update`, params);
+    },
     removeCompleted() {
       return Ajax.postJson(`/todo/removeCompleted`);
     }
